@@ -19,7 +19,7 @@ void participantes() {
 }
 
 int contar(std::string archivo){
-	std::ifstream lectura(archivo);
+	std::ifstream lectura("."+archivo);
 	int l = 0;
 	for(std::string linea ; getline(lectura,linea); l++){}
 	lectura.close();
@@ -85,7 +85,7 @@ universidad ponderar(int** ponderados, std::string archivo){
 	int n = sizeof(U.oferta)/sizeof(U.oferta[0]);
 	int i = 0;
 	
-	std::ifstream lectura(archivo);
+	std::ifstream lectura("."+archivo);
 
 	for (std::string linea; std::getline(lectura,linea); i++)
 	{
@@ -277,9 +277,6 @@ void postular(universidad U, int** ponderados, int estudiantes){
 		}
 		else
 		{
-			
-			std::cout << "BREAK AL ESTUDIANTE No. " << i << std::endl;
-			system("PAUSE");
 			break;
 		}
 	}
@@ -287,12 +284,12 @@ void postular(universidad U, int** ponderados, int estudiantes){
 
 void escribir(universidad U, std::string ruta){
 	
-	std::ofstream escritura/*(ruta)*/;
+	std::ofstream escritura;
 	
 	for(int i = 0; i < U.carreras; i++)
 	{
-		std:string archivo = std::to_string(U.oferta[i].codigo);
-		escritura.open(ruta+archivo+".txt");
+		std::string archivo = std::to_string(U.oferta[i].codigo);
+		escritura.open("."+ruta+"/"+archivo+".txt");
 		
 		if(escritura)
 		{

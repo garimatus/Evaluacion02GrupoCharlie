@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
-#include <algorithm>
 #include <chrono>
 #include "funciones.h"
 
@@ -10,18 +9,20 @@ using namespace std;
 
 int main(int argc, char** argv){
 	
-	int **ponderados, lineas;
+	int** ponderados, lineas;
 	
-	if (argc > 1)
+	if (argc > 3)
 	{
 		std::string archivo(argv[2]);
-        std::ifstream lectura(archivo);
-		std::ofstream escritura(argv[3]);
-
+		
+		std::ifstream lectura("."+archivo);
+		std::string ruta(argv[3]);
+		
         if (lectura && (std::string) argv[1] == "1")
 		{
+			auto inicio = chrono::steady_clock::now();
+			
 			std::cout << "\nArchivo encontrado." << std::endl;
-			system("PAUSE");
 			
 			lectura.close();
 			
@@ -29,39 +30,28 @@ int main(int argc, char** argv){
 			
 			if(lineas)
 			{
-				std::string ruta(argv[3]);
-				
 				ponderados = new int*[lineas];
-				//auto inicio = chrono::steady_clock::now();
-				universidad utem = ponderar(ponderados, archivo);
-				//auto fin = chrono::steady_clock::now();
-				//auto tiempo = chrono::duration_cast<chrono::nanoseconds>(fin - inicio).count();
-				//std::cout << "Se demoro "<< tiempo <<"ns ponderar los "<< lineas <<" estudiantes." << std::endl;
 				
-				heapSort(ponderados, lineas);	
+				universidad utem = ponderar(ponderados, archivo);
+				
+				heapSort(ponderados, lineas);
 				
 				postular(utem, ponderados, lineas);
 				
-				for(int j = 0; j < utem.carreras; j++)
-				{
-					delete[] ponderados[j];/*
-					std::cout << std::endl;
-					std::cout << utem.oferta[j].codigo << " | " << utem.oferta[j].nombre <<" | "<<utem.oferta[j].disponibilidad << std::endl;
-					std::cout << std::endl;
-					for(int i = 0; i < utem.oferta[j].vacantes; i++)
-						std::cout << utem.oferta[j].mechones[i][0] << ";" << utem.oferta[j].mechones[i][1] << std::endl;*/
-				}
-				delete[] ponderados;
-				
 				escribir(utem, ruta);
-				std::cout << "\nArchivos de textos creados en : " << ruta <<std::endl;
+				
+				std::cout << "\nArchivos de texto creados en " << ruta << std::endl;
+				
+				auto fin = chrono::steady_clock::now();
+				auto tiempo = chrono::duration_cast<chrono::nanoseconds>(fin - inicio).count();
+				
+				std::cout << "Se demoro "<< tiempo*(0.000000001) <<"segs ordenar los "<< lineas <<" estudiantes." << std::endl;
 			}
 			else
 			{
 				std::cout << "\nEl archivo esta vacio." << std::endl;
 				return EXIT_FAILURE;
 			}
-			
 		}
 		else
         {
