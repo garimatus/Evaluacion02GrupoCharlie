@@ -21,15 +21,15 @@ void participantes() {
 int contar(std::string archivo){
 	std::ifstream lectura("."+archivo);
 	int l = 0;
-	for(std::string linea ; getline(lectura,linea); l++){}
+	for(std::string linea; getline(lectura,linea); l++){}
 	lectura.close();
 	return l;
 }
 
 int* obtenerPuntajes(std::string fila){
-    int *arreglo = new int[7], i = 0;
-    stringstream ss(fila);
-    string item;
+    int* arreglo = new int[7], i = 0;
+    std::stringstream ss(fila);
+    std::string item;
 
 	while (getline(ss, item, ';')) {
 		int valor = atoi(item.c_str());
@@ -82,12 +82,12 @@ universidad ponderar(int** ponderados, std::string archivo){
 	U.oferta[26] = { "Diseno Comunicacion Audiovisual", 21024, {0.10, 0.40, 0.30, 0.10, 0.10}, 100, 706.3, 440.2, new int*[100], true };
 	U.oferta[27] = { "Diseno Industrial", 21023, {0.10, 0.40, 0.30, 0.10, 0.10}, 65, 642.2, 439.9, new int*[65], true };
 	
-	int n = sizeof(U.oferta)/sizeof(U.oferta[0]);
+	//int n = sizeof(U.oferta)/sizeof(U.oferta[0]);
 	int i = 0;
 	
 	std::ifstream lectura("."+archivo);
 
-	for (std::string linea; std::getline(lectura,linea); i++)
+	for (std::string linea; std::getline(lectura, linea); i++)
 	{
 		double mejor = 0.0;
 		
@@ -102,7 +102,6 @@ universidad ponderar(int** ponderados, std::string archivo){
 		ponderados[i][5] = puntajes[5]; // <- ciencias
 		ponderados[i][6] = 0; // <- mejor ponderacion
 		ponderados[i][7] = 0; // <- codigo carrera
-		//ponderados[i][8] = 0; // <- 0: no matriculado 1: matriculado
 
 		for (int j = 0; j < U.carreras; j++)
 		{
@@ -120,11 +119,11 @@ universidad ponderar(int** ponderados, std::string archivo){
 		}	
 	}
 	
-	for(int i = 0; i < 28; i++)
+	for(int i = 0; i < U.carreras; i++)
 	{
 		for(int j = 0; j < U.oferta[i].vacantes; j++)
 		{
-			U.oferta[i].mechones[j] = new int[3];
+			U.oferta[i].mechones[j] = new int[2];
 			U.oferta[i].mechones[j][0] = 0;
 			U.oferta[i].mechones[j][1] = 0;
 		}
@@ -141,11 +140,11 @@ void heapify(int** arr, int n, int i) {
     int r = 2 * i + 2; // right = 2*i + 2 
   
     // If left child is smaller than root 
-    if (l < n && arr[l][6] < arr[smallest][6]) 
+    if (l < n && arr[l][6] < arr[smallest][6])
         smallest = l; 
   
     // If right child is smaller than smallest so far 
-    if (r < n && arr[r][6] < arr[smallest][6]) 
+    if (r < n && arr[r][6] < arr[smallest][6])
         smallest = r; 
   
     // If smallest is not root 
@@ -219,12 +218,10 @@ void almacenar(int* postulante, carrera* opciones, int index){
 			opciones[index].mechones[i][0] = postulante[0]; // <- rut
 			opciones[index].mechones[i][1] = postulante[6]; // <- ponderacion
 			
-			if(i == (opciones[index].vacantes - 1))
+			if(i == opciones[index].vacantes - 1)
 			{
 				opciones[index].disponibilidad = false;
 			}
-			
-			postulante[8] = 1;
 			
 			break;
 		}
@@ -269,7 +266,9 @@ void postular(universidad U, int** ponderados, int estudiantes){
 								}
 							}
 						}
+						
 						postulante[6] = (int)round(mejor2);
+						
 						almacenar(postulante, U.oferta, posicion);
 					}
 				}
@@ -291,14 +290,66 @@ void escribir(universidad U, std::string ruta){
 		std::string archivo = std::to_string(U.oferta[i].codigo);
 		escritura.open("."+ruta+"/"+archivo+".txt");
 		
-		if(escritura)
+		if(escritura.is_open())
 		{
 			for(int j = 0; j < U.oferta[i].vacantes; j++)
 			{
 				std::string salida = std::to_string(U.oferta[i].mechones[j][0])+";"+std::to_string(U.oferta[i].mechones[j][1]);
 				escritura << salida << std::endl;
 			}
+			
 			escritura.close();
 		}
 	}
+}
+
+
+std::string buscar(std::string ruta, std::string rut){
+	
+	std::ifstream lectura;
+	
+	std::string busqueda = "\nNo se ha encontrado el estudiante del rut ingresado.";
+	
+	const char* archivos[28] = {
+	"21073.txt","21049.txt","21041.txt","21047.txt","21089.txt","21043.txt","21030.txt",
+	"21096.txt","21046.txt","21076.txt","21075.txt","21048.txt","21071.txt","21031.txt",
+	"21032.txt","21045.txt","21074.txt","21083.txt","21039.txt","21087.txt","21015.txt",
+	"21081.txt","21002.txt","21012.txt","21080.txt","21082.txt","21024.txt","21023.txt"};
+	
+	int n = sizeof(archivos) / sizeof(archivos[0]);
+	
+	for(int i = 0; i < n; i++)
+	{
+		lectura.open("."+ruta+archivos[i]);
+		
+		if(lectura.is_open())
+		{
+			int j = 0;
+		
+			for(std::string linea; std::getline(lectura, linea); j++)
+			{
+				int k = 0;
+				std::string aux[2], item;
+				std::stringstream ss(linea);
+				
+				while(getline(ss, item, ';'))
+				{
+					aux[k] = item.c_str();
+					k++;
+				}
+				
+				if(rut == aux[0])
+				{
+					busqueda = "\nEstudiante encontrado en la linea "+std::to_string(j+1)+" del archivo "+"."+ruta+archivos[i];
+					
+					lectura.close();
+					break;
+				}
+			}
+		}
+		
+		lectura.close();
+	}
+	
+	return busqueda;
 }

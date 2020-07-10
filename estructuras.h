@@ -6,7 +6,7 @@
 
 
 typedef struct carrera{
-	std::string nombre;
+	const char* nombre;
 	int codigo;
 	float ponderaciones[5];
 	int vacantes;
@@ -17,7 +17,7 @@ typedef struct carrera{
 };
 
 typedef struct universidad{
-	std::string nombre;
+	const char* nombre;
 	carrera* oferta;
 	int carreras;
 	bool disponibilidad;
