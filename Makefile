@@ -70,7 +70,7 @@ build: .build-post
 
 # clean
 clean: .clean-post
-	rm -f build/*.o dist/evaluacion02
+	rm -f build/*.o dist/*
 
 .clean-pre:
 # Add your pre 'clean' code here...

@@ -13,7 +13,7 @@ int main(int argc, char** argv){
 	
 	if (argc > 3)
 	{
-		if(argv[1] == "1" || argv[1] == "2")
+		if(std::string(argv[1]) == "1" || std::string(argv[1]) == "2")
 		{
 			std::string archivo(argv[2]);
 			std::string ruta(argv[3]);
@@ -84,13 +84,16 @@ int main(int argc, char** argv){
         {
             std::cout << "\nNo se reconoce el argumento '" << argv[1] << "'." << std::endl;
 			
+			participantes();
+			
 			return EXIT_FAILURE;
         }
     }
     else
     {
         std::cout << "\nNo hay argumentos suficientes para la ejecucion." << std::endl;
-        participantes();
+        
+		participantes();
 		
 		return EXIT_FAILURE;
     }
