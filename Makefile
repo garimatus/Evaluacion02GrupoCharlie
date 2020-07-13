@@ -44,23 +44,20 @@
 # NOCDDL
 
 
-evaluacion02: main.o funciones.o
-	g++ main.o funciones.o -o evaluacion02
-	
-main.o: main.cpp
-	g++ -c main.cpp
-	
-funciones.o: funciones.cpp funciones.h
-	g++ -c funciones.cpp
-	
-clean:
-	rm -f *.o evaluacion02
-
 # Environment 
 MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 
+
+evaluacion02: main.o funciones.o
+	g++ build/main.o build/funciones.o -o dist/evaluacion02
+
+main.o: main.cpp
+	g++ -c main.cpp -o build/main.o
+	
+funciones.o: funciones.cpp funciones.h
+	g++ -c funciones.cpp -o build/funciones.o
 
 # build
 build: .build-post
@@ -71,9 +68,9 @@ build: .build-post
 .build-post: .build-impl
 # Add your post 'build' code here...
 
-
 # clean
 clean: .clean-post
+	rm -f build/*.o dist/evaluacion02
 
 .clean-pre:
 # Add your pre 'clean' code here...
