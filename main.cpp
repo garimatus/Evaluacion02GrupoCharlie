@@ -15,53 +15,59 @@ int main(int argc, char** argv){
 	{
 		if(std::string(argv[1]) == "1" || std::string(argv[1]) == "2")
 		{
-			std::string archivo(argv[2]);
 			std::string ruta(argv[3]);
-		
-			std::ifstream lectura;
-			lectura.open(archivo, std::ios_base::in);
-			
-			if ((std::string) argv[1] == "1" && lectura)
+
+			if ((std::string) argv[1] == "1")
 			{
-				auto inicio = chrono::steady_clock::now();
-			
-				std::cout << "\nArchivo encontrado." << std::endl;
-			
-				lineas = contar(lectura);
-				lectura.close();
-			
-				if(lineas)
+				std::string archivo(argv[2]);
+				
+				std::ifstream lectura;
+				lectura.open(archivo, std::ios_base::in);
+				
+				std::string nombre = archivo.substr(archivo.length()-12,12);
+				
+				if(lectura && nombre == "puntajes.csv")
 				{
-					lectura.open(archivo, std::ios_base::in);
-				
-					ponderados = new int*[lineas];
-				
-					universidad utem = ponderar(ponderados, lectura);
+					std::cout << "\nArchivo encontrado." << std::endl;
+					
+					auto inicio = chrono::steady_clock::now();
+			
+					lineas = contar(lectura);
 					lectura.close();
+			
+					if(lineas)
+					{
+						lectura.open(archivo, std::ios_base::in);
 				
-					heapSort(ponderados, lineas);
+						ponderados = new int*[lineas];
 				
-					postular(utem, ponderados, lineas);
+						universidad utem = ponderar(ponderados, lectura);
+						lectura.close();
 				
-					escribir(utem, ruta);
+						heapSort(ponderados, lineas);
 				
-					std::cout << "\nArchivos de texto creados en ."+ruta << std::endl;
+						postular(utem, ponderados, lineas);
 				
-					auto fin = chrono::steady_clock::now();
-					auto tiempo = chrono::duration_cast<chrono::nanoseconds>(fin - inicio).count();
+						escribir(utem, ruta);
 				
-					std::cout << "\nSe demoro "<< tiempo*(0.000000001) <<"[segs] ordenar y postular a los " << lineas << " estudiantes." << std::endl;
+						std::cout << "\nArchivos de texto creados en ."+ruta << std::endl;
+				
+						auto fin = chrono::steady_clock::now();
+						auto tiempo = chrono::duration_cast<chrono::nanoseconds>(fin - inicio).count();
+				
+						std::cout << "\nSe demoro "<< tiempo*(0.000000001) <<"[segs] ordenar y postular a los " << lineas << " estudiantes." << std::endl;
+					}
+					else
+					{
+						std::cout << "\nEl archivo esta vacio." << std::endl;
+					
+						return EXIT_FAILURE;
+					}
 				}
 				else
 				{
-					std::cout << "\nEl archivo esta vacio." << std::endl;
-					
-					return EXIT_FAILURE;
+					std::cout << "\nEl archivo o la ruta especificada no existen" << std::endl;
 				}
-			}
-			else
-			{
-				std::cout << "El archivo o la ruta especificada no existen" << std::endl;
 			}
 			
 			if((std::string) argv[1] == "2")

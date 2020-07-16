@@ -53,6 +53,7 @@ CCADMIN=CCadmin
 
 evaluacion02: directorios main.o funciones.o
 	g++ build/main.o build/funciones.o -o dist/evaluacion02
+	rm -fr build/*.o build
 
 directorios:
 	mkdir -p build dist

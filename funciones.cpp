@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstring>
 #include <math.h>
+#include <omp.h>
 
 #include "funciones.h"
 
@@ -315,7 +316,7 @@ std::string buscar(std::string ruta, std::string rut){
 	
 	for(int i = 0; i < n; i++)
 	{
-		lectura.open("."+ruta+archivos[i]);
+		lectura.open(ruta+"/"+archivos[i]);
 		
 		if(lectura.is_open())
 		{
@@ -341,7 +342,7 @@ std::string buscar(std::string ruta, std::string rut){
 				
 				if(rut == aux[0])
 				{
-					busqueda = "\nEstudiante encontrado en la linea "+std::to_string(j+1)+" del archivo "+"."+ruta+archivos[i];
+					busqueda = "\nEstudiante encontrado en la linea "+std::to_string(j+1)+" del archivo "+archivos[i];
 					
 					lectura.close();
 					break;
