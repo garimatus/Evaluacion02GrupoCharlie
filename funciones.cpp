@@ -26,7 +26,7 @@ int contar(std::istream& archivo){
 }
 
 int* obtenerPuntajes(std::string fila){
-    int* arreglo = new int[7], i = 0;
+    int* arreglo = new int[8], i = 0;
     std::stringstream ss(fila);
     std::string item;
 
@@ -35,6 +35,9 @@ int* obtenerPuntajes(std::string fila){
 		arreglo[i] = valor;
 		i++;
 	}
+	
+	arreglo[6] = 0; // historia -> mejor ponderacion
+	arreglo[7] = 0; // <- código carrera
 	
 	return arreglo;
 }
@@ -89,6 +92,9 @@ universidad ponderar(int** ponderados, std::istream& archivo){
 		
 		int* puntajes = obtenerPuntajes(linea);
 		
+		ponderados[i] = puntajes;
+		
+		/*
 		ponderados[i] = new int[8];
 		ponderados[i][0] = puntajes[0]; // <- rut
 		ponderados[i][1] = puntajes[1]; // <- NEM
@@ -96,9 +102,10 @@ universidad ponderar(int** ponderados, std::istream& archivo){
 		ponderados[i][3] = puntajes[3]; // <- matematica
 		ponderados[i][4] = puntajes[4]; // <- lenguaje
 		ponderados[i][5] = puntajes[5]; // <- ciencias
-		ponderados[i][6] = 0; // <- mejor ponderacion
-		ponderados[i][7] = 0; // <- codigo carrera
-
+		ponderados[i][6] = 0; // <- mejor ponderación
+		ponderados[i][7] = 0; // <- código carrera
+		*/
+		
 		for (int j = 0; j < n; j++)
 		{
 			if ((puntajes[3]+puntajes[4]) / (double) 2.0 >= 450.0 )

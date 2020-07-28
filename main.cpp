@@ -15,12 +15,11 @@ int main(int argc, char** argv){
 	{
 		if(std::string(argv[1]) == "1" || std::string(argv[1]) == "2")
 		{
+			std::string archivo(argv[2]);
 			std::string ruta(argv[3]);
 
-			if ((std::string) argv[1] == "1")
+			if ((std::string) argv[1] == "1" && archivo.length() >= 12)
 			{
-				std::string archivo(argv[2]);
-				
 				std::ifstream lectura;
 				lectura.open(archivo, std::ios_base::in);
 				
@@ -28,9 +27,9 @@ int main(int argc, char** argv){
 				
 				if(lectura && nombre == "puntajes.csv")
 				{
-					std::cout << "\nArchivo encontrado." << std::endl;
-					
 					auto inicio = chrono::steady_clock::now();
+					
+					std::cout << "\nArchivo encontrado." << std::endl;
 			
 					lineas = contar(lectura);
 					lectura.close();
@@ -50,16 +49,17 @@ int main(int argc, char** argv){
 				
 						escribir(utem, ruta);
 				
+						auto fin = chrono::steady_clock::now();
+						
 						std::cout << "\nArchivos de texto creados en ."+ruta << std::endl;
 				
-						auto fin = chrono::steady_clock::now();
 						auto tiempo = chrono::duration_cast<chrono::nanoseconds>(fin - inicio).count();
 				
 						std::cout << "\nSe demoro "<< tiempo*(0.000000001) <<"[segs] ordenar y postular a los " << lineas << " estudiantes." << std::endl;
 					}
 					else
 					{
-						std::cout << "\nEl archivo esta vacio." << std::endl;
+						std::cout << "\nEl archivo esta vacío." << std::endl;
 					
 						return EXIT_FAILURE;
 					}
@@ -68,6 +68,10 @@ int main(int argc, char** argv){
 				{
 					std::cout << "\nEl archivo o la ruta especificada no existen" << std::endl;
 				}
+			}
+			else
+			{
+				std::cout << "\nEl archivo en la ruta especificada no existe." << std::endl;
 			}
 			
 			if((std::string) argv[1] == "2")
