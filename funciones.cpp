@@ -135,17 +135,17 @@ universidad ponderar(int** ponderados, std::istream& archivo){
 	return U;
 }
 
-void heapify(int** arr, int n, int i) { 
+void heapify(int** arr, int n, int i, int index) { 
     int smallest = i; // Initialize smalles as root 
     int l = 2 * i + 1; // left = 2*i + 1 
     int r = 2 * i + 2; // right = 2*i + 2 
   
     // If left child is smaller than root 
-    if (l < n && arr[l][6] < arr[smallest][6])
+    if (l < n && arr[l][index] < arr[smallest][index])
         smallest = l; 
   
     // If right child is smaller than smallest so far 
-    if (r < n && arr[r][6] < arr[smallest][6])
+    if (r < n && arr[r][index] < arr[smallest][index])
         smallest = r; 
   
     // If smallest is not root 
@@ -153,14 +153,14 @@ void heapify(int** arr, int n, int i) {
         swap(arr[i], arr[smallest]);
   
         // Recursively heapify the affected sub-tree 
-        heapify(arr, n, smallest);
+        heapify(arr, n, smallest, index);
     } 
 } 
 
-void heapSort(int** arr, int n) { 
+void heapSort(int** arr, int n, int index) { 
     // Build heap (rearrange array) 
     for (int i = n / 2 - 1; i >= 0; i--) 
-        heapify(arr, n, i); 
+        heapify(arr, n, i, index); 
   
     // One by one extract an element from heap 
     for (int i = n - 1; i >= 0; i--) { 
@@ -168,7 +168,7 @@ void heapSort(int** arr, int n) {
         swap(arr[0], arr[i]);
   
         // call max heapify on the reduced heap 
-        heapify(arr, i, 0); 
+        heapify(arr, i, 0, index);
     } 
 }
 
@@ -222,6 +222,8 @@ void almacenar(int* postulante, carrera* opciones, int index){
 			if(i == opciones[index].vacantes - 1)
 			{
 				opciones[index].disponibilidad = false;
+				
+				heapSort(opciones[index].mechones, opciones[index].vacantes, 1);
 			}
 			
 			break;
@@ -352,6 +354,7 @@ std::string buscar(std::string ruta, std::string rut){
 					busqueda = "\nEstudiante encontrado en la linea "+std::to_string(j+1)+" del archivo "+archivos[i];
 					
 					lectura.close();
+					
 					break;
 				}
 			}

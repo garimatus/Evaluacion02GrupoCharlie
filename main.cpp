@@ -43,7 +43,7 @@ int main(int argc, char** argv){
 						universidad utem = ponderar(ponderados, lectura);
 						lectura.close();
 				
-						heapSort(ponderados, lineas);
+						heapSort(ponderados, lineas, 6);
 				
 						postular(utem, ponderados, lineas);
 				
@@ -55,7 +55,7 @@ int main(int argc, char** argv){
 				
 						auto tiempo = chrono::duration_cast<chrono::nanoseconds>(fin - inicio).count();
 				
-						std::cout << "\nSe demoro "<< tiempo*(0.000000001) <<"[segs] ordenar y postular a los " << lineas << " estudiantes." << std::endl;
+						std::cout << "\nSe demoró "<< tiempo*(0.000000001) <<"[segs] ordenar y postular a los " << lineas << " estudiantes." << std::endl;
 					}
 					else
 					{
