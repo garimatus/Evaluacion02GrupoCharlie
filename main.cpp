@@ -18,60 +18,63 @@ int main(int argc, char** argv){
 			std::string archivo(argv[2]);
 			std::string ruta(argv[3]);
 
-			if ((std::string) argv[1] == "1" && archivo.length() >= 12)
+			if((std::string) argv[1] == "1")
 			{
-				std::ifstream lectura;
-				lectura.open(archivo, std::ios_base::in);
-				
-				std::string nombre = archivo.substr(archivo.length()-12,12);
-				
-				if(lectura && nombre == "puntajes.csv")
+				if(archivo.length() >= 12)
 				{
-					auto inicio = chrono::steady_clock::now();
-					
-					std::cout << "\nArchivo encontrado." << std::endl;
-			
-					lineas = contar(lectura);
-					lectura.close();
-			
-					if(lineas)
+					std::ifstream lectura;
+					lectura.open(archivo, std::ios_base::in);
+				
+					std::string nombre = archivo.substr(archivo.length()-12,12);
+				
+					if(lectura && nombre == "puntajes.csv")
 					{
-						lectura.open(archivo, std::ios_base::in);
-				
-						ponderados = new int*[lineas];
-				
-						universidad utem = ponderar(ponderados, lectura);
+						auto inicio = chrono::steady_clock::now();
+					
+						std::cout << "\nArchivo encontrado." << std::endl;
+			
+						lineas = contar(lectura);
 						lectura.close();
+			
+						if(lineas)
+						{
+							lectura.open(archivo, std::ios_base::in);
 				
-						heapSort(ponderados, lineas, 6);
+							ponderados = new int*[lineas];
 				
-						postular(utem, ponderados, lineas);
+							universidad utem = ponderar(ponderados, lectura);
+							lectura.close();
 				
-						escribir(utem, ruta);
+							heapSort(ponderados, lineas, 6);
 				
-						auto fin = chrono::steady_clock::now();
+							postular(utem, ponderados, lineas);
+				
+							escribir(utem, ruta);
+				
+							auto fin = chrono::steady_clock::now();
 						
-						std::cout << "\nArchivos de texto creados en ."+ruta << std::endl;
+							std::cout << "\nArchivos de texto creados en ."+ruta << std::endl;
 				
-						auto tiempo = chrono::duration_cast<chrono::nanoseconds>(fin - inicio).count();
+							auto tiempo = chrono::duration_cast<chrono::nanoseconds>(fin - inicio).count();
 				
-						std::cout << "\nSe demoró "<< tiempo*(0.000000001) <<"[segs] ordenar y postular a los " << lineas << " estudiantes." << std::endl;
+							std::cout << "\nSe demoró "<< tiempo*(0.000000001) <<"[segs] ordenar y postular a los " << lineas << " estudiantes." << std::endl;
+						}
+						else
+						{
+							std::cout << "\nEl archivo esta vacío." << std::endl;
+					
+							return EXIT_FAILURE;
+						}
 					}
 					else
 					{
-						std::cout << "\nEl archivo esta vacío." << std::endl;
-					
-						return EXIT_FAILURE;
+						std::cout << "\nEl archivo o la ruta especificada no existen" << std::endl;
 					}
 				}
 				else
 				{
-					std::cout << "\nEl archivo o la ruta especificada no existen" << std::endl;
+					std::cout << "\nEl archivo en la ruta especificada no existe." << std::endl;
 				}
-			}
-			else
-			{
-				std::cout << "\nEl archivo en la ruta especificada no existe." << std::endl;
 			}
 			
 			if((std::string) argv[1] == "2")
@@ -87,7 +90,7 @@ int main(int argc, char** argv){
 				auto tiempo = chrono::duration_cast<chrono::nanoseconds>(fin - inicio).count();
 			
 				std::cout << mensaje << std::endl;
-				std::cout << "La busqueda ha demorado "<< tiempo*(0.000000001) <<"[segs]." << std::endl;
+				std::cout << "La busqueda demoró "<< tiempo*(0.000000001) <<"[segs]." << std::endl;
 			}
 		}
 		else
@@ -101,7 +104,7 @@ int main(int argc, char** argv){
     }
     else
     {
-        std::cout << "\nNo hay argumentos suficientes para la ejecucion." << std::endl;
+        std::cout << "\nNo hay argumentos suficientes para la ejecución." << std::endl;
         
 		participantes();
 		
