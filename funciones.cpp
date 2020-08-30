@@ -112,6 +112,9 @@ universidad ponderar(int** ponderados, std::istream& archivo){
 			{
 				double ponderacion = ponderar(puntajes, U.oferta[j]);
 		
+				if (ponderados[i][0] == 17672369)
+					std::cout << ponderacion << ";" << U.oferta[j].nombre << std::endl;
+				
 				if (ponderacion > (double) U.oferta[j].ultimo && ponderacion > mejor)
 				{
 					mejor = ponderacion;

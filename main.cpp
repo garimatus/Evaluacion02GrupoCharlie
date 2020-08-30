@@ -7,6 +7,7 @@
 
 using namespace std;
 
+
 int main(int argc, char** argv){
 	
 	int** ponderados, lineas;
@@ -69,11 +70,15 @@ int main(int argc, char** argv){
 					else
 					{
 						std::cout << "\nEl archivo o la ruta especificada no existen" << std::endl;
+					
+						return EXIT_FAILURE;
 					}
 				}
 				else
 				{
 					std::cout << "\nEl archivo en la ruta especificada no existe." << std::endl;
+				
+					return EXIT_FAILURE;
 				}
 			}
 			
